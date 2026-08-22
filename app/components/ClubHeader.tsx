@@ -33,15 +33,15 @@ export function ClubHeader() {
 
   return (
     <header className="flex flex-col items-center text-center gap-3.5 sm:gap-4 pt-1 sm:pt-2 pb-1 animate-fade-up">
-      {/* ── Logos row ─────────────────────────────────────────────────── */}
+      {/* ── Logos row (Pure CSS, 0% CPU/GPU overhead) ──────────────────── */}
       <div className="flex items-center justify-center gap-4 sm:gap-6">
         {/* AIML Club Logo */}
-        <div className="relative group animate-logo-breathing">
+        <div className="relative group">
           <div
-            className="absolute inset-0 rounded-full logo-glow-lime transition-transform duration-300 group-hover:scale-125"
+            className="absolute inset-0 rounded-full logo-glow-lime transition-transform duration-200 group-hover:scale-110"
             aria-hidden="true"
           />
-          <div className="relative z-10 w-20 h-20 sm:w-22 sm:h-22 rounded-full p-1 bg-[rgba(var(--bg-card))] border border-[rgba(var(--border-default))] shadow-md flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+          <div className="relative z-10 w-20 h-20 sm:w-22 sm:h-22 rounded-full p-1 bg-[rgba(var(--bg-card))] border border-[rgba(var(--border-default))] shadow-md flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
             <Image
               src="/aiml-club-logo.png"
               alt="AI & Machine Learning Club OCT logo"
@@ -60,12 +60,12 @@ export function ClubHeader() {
         />
 
         {/* OCT Logo */}
-        <div className="relative group animate-logo-breathing" style={{ animationDelay: "1.5s" }}>
+        <div className="relative group">
           <div
-            className="absolute inset-0 rounded-full logo-glow-cyan transition-transform duration-300 group-hover:scale-125"
+            className="absolute inset-0 rounded-full logo-glow-cyan transition-transform duration-200 group-hover:scale-110"
             aria-hidden="true"
           />
-          <div className="relative z-10 w-16 h-16 sm:w-18 sm:h-18 p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+          <div className="relative z-10 w-16 h-16 sm:w-18 sm:h-18 p-1 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
             <Image
               src="/oct-logo.png"
               alt="Oriental College of Technology, Bhopal logo"
@@ -80,10 +80,9 @@ export function ClubHeader() {
 
       {/* ── Identity text & status ────────────────────────────────────── */}
       <div className="flex flex-col items-center gap-1.5 max-w-md px-2">
-        {/* Live status badge with radar sonar ring */}
+        {/* Official status badge */}
         <div className="status-badge shadow-sm">
           <span className="status-dot-wrap" aria-hidden="true">
-            <span className="status-ring" />
             <span className="status-dot" />
           </span>
           <span>Official Student Technology Club</span>
