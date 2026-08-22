@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+"use client";
+
+import { ReactNode, useRef } from "react";
 
 interface LinkCardProps {
   href: string;
@@ -23,13 +25,27 @@ export function LinkCard({
   isExternal = true,
   badge,
 }: LinkCardProps) {
+  const cardRef = useRef<HTMLAnchorElement | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+  };
+
   const externalProps = isExternal
     ? { target: "_blank", rel: "noopener noreferrer" }
     : {};
 
   return (
     <a
+      ref={cardRef}
       href={href}
+      onMouseMove={handleMouseMove}
       {...externalProps}
       className={`link-card group ${animationDelay ? `animate-fade-up ${animationDelay}` : ""}`}
       aria-label={`${title} — ${description}${isExternal ? " (opens in new tab)" : ""}`}
@@ -46,7 +62,7 @@ export function LinkCard({
       {/* Text Hierarchy */}
       <div className="flex flex-col gap-0.5 min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-sm sm:text-base font-bold leading-snug text-[rgb(var(--text-primary))] group-hover:text-[rgb(var(--accent-lime))] transition-colors truncate">
+          <span className="text-sm sm:text-base font-bold leading-snug text-[rgb(var(--text-primary))] group-hover:text-[rgb(var(--accent-lime-bright))] transition-colors truncate">
             {title}
           </span>
           {badge && (

@@ -27,8 +27,8 @@ export function QRCodeCard() {
         <span className="text-[10px] font-mono text-[rgb(var(--text-muted))]">Instant Portal</span>
       </div>
 
-      <div className="card p-6 flex flex-col items-center gap-5 border-[rgba(var(--border-default))]">
-        {/* QR Code with sleek border */}
+      <div className="card p-6 flex flex-col items-center gap-5 border-[rgba(var(--border-default))] text-center">
+        {/* QR Code with high contrast quiet zone */}
         <div
           className="qr-wrapper transition-transform duration-300 hover:scale-105"
           role="img"
@@ -40,26 +40,26 @@ export function QRCodeCard() {
             level="H"
             bgColor="#ffffff"
             fgColor="#080a0c"
-            marginSize={1}
+            marginSize={2}
           />
         </div>
 
-        {/* Text and URL button */}
-        <div className="flex flex-col items-center gap-2 text-center max-w-xs">
-          <p className="text-sm font-bold text-[rgb(var(--text-primary))]">
-            Scan to Share Your Voice
+        {/* Supporting text & Link Copy */}
+        <div className="flex flex-col items-center gap-2 max-w-xs">
+          <p className="text-sm font-extrabold text-[rgb(var(--text-primary))]">
+            Scan to share your voice with AIML Club OCT.
           </p>
           <p className="text-xs text-[rgb(var(--text-secondary))] leading-relaxed">
-            Point your mobile camera at the QR code to open the Voice of AIML Club portal instantly.
+            Point your smartphone camera at the QR code to open the official Voice portal.
           </p>
 
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-2.5 mt-1.5">
             <a
               href={siteConfig.voice}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-mono font-bold text-[rgb(var(--accent-lime))] hover:underline"
-              aria-label="Voice of AIML Club link (opens in new tab)"
+              className="text-xs font-mono font-extrabold text-[rgb(var(--accent-lime-bright))] hover:underline"
+              aria-label="Voice of AIML Club portal link (opens in new tab)"
             >
               voice.aimlcluboct.in ↗
             </a>
@@ -69,9 +69,10 @@ export function QRCodeCard() {
             <button
               type="button"
               onClick={handleCopy}
-              className="text-xs font-semibold text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text-primary))] transition-colors"
+              className="px-2.5 py-1 text-xs font-semibold rounded-full bg-[rgba(var(--bg-surface))] hover:bg-[rgba(var(--bg-card-hover))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-all active:scale-95"
+              aria-label="Copy Voice of AIML Club link to clipboard"
             >
-              {copied ? "✓ Copied Link" : "Copy Link"}
+              {copied ? "✓ Link Copied" : "Copy Link"}
             </button>
           </div>
         </div>

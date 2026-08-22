@@ -10,11 +10,11 @@ export function PrimaryVoiceCard() {
         className="card card-primary block rounded-2xl p-5 sm:p-6 group cursor-pointer"
         aria-label="Voice of AIML Club — Share your ideas and feedback (opens in new tab)"
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3.5 sm:gap-4">
           {/* Top row: Icon + Highlight Badge */}
           <div className="flex items-start justify-between gap-3">
             <div
-              className="flex items-center justify-center w-12 h-12 rounded-xl flex-shrink-0 bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent))] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-md"
+              className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex-shrink-0 bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent))] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-md"
               aria-hidden="true"
             >
               {/* Microphone icon */}
@@ -35,15 +35,18 @@ export function PrimaryVoiceCard() {
               </svg>
             </div>
 
-            {/* Live Indicator / Primary Badge */}
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent))] text-[rgb(var(--accent-lime-bright))] text-xs font-bold uppercase tracking-wider shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[rgb(var(--accent-lime))] animate-ping" />
+            {/* Primary Initiative Badge with Radar Sonar Indicator */}
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent))] text-[rgb(var(--accent-lime-bright))] text-xs font-extrabold uppercase tracking-wider shadow-sm">
+              <span className="status-dot-wrap" aria-hidden="true">
+                <span className="status-ring" />
+                <span className="status-dot" />
+              </span>
               <span>Primary Initiative</span>
             </div>
           </div>
 
           {/* Title & Copy */}
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[rgb(var(--text-primary))] group-hover:text-[rgb(var(--accent-lime-bright))] transition-colors">
               Voice of AIML Club
             </h2>

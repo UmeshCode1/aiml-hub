@@ -14,23 +14,23 @@ export function Footer() {
 
       <div className="flex flex-col items-center gap-1 pt-3">
         <p className="text-sm font-bold text-[rgb(var(--text-primary))]">
-          AI &amp; Machine Learning Club
+          {siteConfig.clubName}
         </p>
         <p className="text-xs text-[rgb(var(--text-secondary))]">
-          Oriental College of Technology, Bhopal
+          {siteConfig.institution}
         </p>
-        <p className="text-[11px] font-black tracking-widest uppercase mt-0.5 text-[rgb(var(--accent-lime))]">
-          {siteConfig.tagline}
+        <p className="text-[11px] font-black tracking-widest uppercase mt-0.5 text-[rgb(var(--accent-lime-bright))]">
+          “{siteConfig.tagline}”
         </p>
       </div>
 
-      <div className="flex items-center gap-4 text-xs font-semibold pt-1">
+      <div className="flex items-center justify-center flex-wrap gap-3 text-xs font-semibold pt-1">
         <a
           href={siteConfig.website}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--accent-lime))] transition-colors"
-          aria-label="Official AIML Club website (opens in new tab)"
+          className="footer-link"
+          aria-label="Official AIML Club website aimlcluboct.in (opens in new tab)"
         >
           aimlcluboct.in ↗
         </a>
@@ -39,10 +39,20 @@ export function Footer() {
           href={siteConfig.voice}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--accent-lime))] transition-colors"
-          aria-label="Voice of AIML Club portal (opens in new tab)"
+          className="footer-link"
+          aria-label="Voice of AIML Club portal voice.aimlcluboct.in (opens in new tab)"
         >
           voice.aimlcluboct.in ↗
+        </a>
+        <span className="text-[rgba(var(--border-default))]">•</span>
+        <a
+          href={siteConfig.legacySocialHub}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer-link text-[rgb(var(--text-muted))]"
+          aria-label="Legacy social directory (opens in new tab)"
+        >
+          Legacy Social Directory ↗
         </a>
       </div>
 

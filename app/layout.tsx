@@ -31,18 +31,18 @@ export const metadata: Metadata = {
   category: "education",
   robots: { index: true, follow: true },
   alternates: {
-    canonical: siteConfig.website,
+    canonical: siteConfig.digitalHub,
   },
   openGraph: {
     type: "website",
-    url: siteConfig.website,
+    url: siteConfig.digitalHub,
     siteName: siteConfig.clubName,
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
     locale: "en_IN",
     images: [
       {
-        url: siteConfig.seo.ogImage,
+        url: "/aiml-club-logo.png",
         width: 512,
         height: 512,
         alt: "AI & Machine Learning Club OCT logo",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
-    images: [siteConfig.seo.ogImage],
+    images: ["/aiml-club-logo.png"],
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -64,9 +64,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/aiml-club-logo.png", type: "image/png" },
+      { url: "/favicon.ico" },
     ],
+    shortcut: ["/aiml-club-logo.png"],
     apple: [
-      { url: "/aiml-club-logo.png", sizes: "180x180" },
+      { url: "/aiml-club-logo.png", sizes: "180x180", type: "image/png" },
     ],
   },
 };
@@ -89,14 +91,23 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/aiml-club-logo.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/aiml-club-logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/aiml-club-logo.png" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  var saved = localStorage.getItem('aiml_hub_theme');
-                  var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                  var savedTheme = localStorage.getItem('aiml_hub_theme');
+                  var theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
                   document.documentElement.setAttribute('data-theme', theme);
+
+                  var savedPerf = localStorage.getItem('aiml_hub_perf');
+                  var isLowCores = typeof navigator !== 'undefined' && navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+                  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                  var perf = savedPerf || (isLowCores || prefersReduced ? 'saver' : 'ultra');
+                  document.documentElement.setAttribute('data-performance', perf);
                 } catch (e) {}
               })();
             `,

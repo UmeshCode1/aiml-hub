@@ -1,7 +1,7 @@
 import { siteConfig } from "../config/site";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Inline SVG Icons (no icon library dep, zero runtime cost)
+   Inline SVG Icons (zero runtime cost, crisp SVGs)
    ────────────────────────────────────────────────────────────────────────── */
 function LinkedInIcon() {
   return (
@@ -51,19 +51,6 @@ function CommudleIcon() {
   );
 }
 
-function GlobeIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-[rgb(var(--accent-cyan))]">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-      <path d="M2 12h20"/>
-    </svg>
-  );
-}
-
-/* ──────────────────────────────────────────────────────────────────────────
-   Social item definition
-   ────────────────────────────────────────────────────────────────────────── */
 interface SocialItem {
   href: string;
   label: string;
@@ -80,6 +67,12 @@ export function SocialGrid() {
       icon: <LinkedInIcon />,
     },
     {
+      href: siteConfig.socials.github,
+      label: "AIML Club OCT on GitHub",
+      shortLabel: "GitHub",
+      icon: <GitHubIcon />,
+    },
+    {
       href: siteConfig.socials.instagram,
       label: "Follow AIML Club OCT on Instagram",
       shortLabel: "Instagram",
@@ -89,13 +82,7 @@ export function SocialGrid() {
       href: siteConfig.socials.instagramPhotopia,
       label: "Follow AIML Club Photopia on Instagram",
       shortLabel: "Photopia",
-      icon: <InstagramIcon color="#833AB4" />,
-    },
-    {
-      href: siteConfig.socials.github,
-      label: "AIML Club OCT on GitHub",
-      shortLabel: "GitHub",
-      icon: <GitHubIcon />,
+      icon: <InstagramIcon color="#A855F7" />,
     },
     {
       href: siteConfig.socials.commudle,
@@ -105,37 +92,19 @@ export function SocialGrid() {
     },
     {
       href: siteConfig.socials.whatsappChannel,
-      label: "Join AIML Club official WhatsApp channel",
-      shortLabel: "Channel",
+      label: "Join AIML Club official WhatsApp Channel",
+      shortLabel: "WhatsApp",
       icon: <WhatsAppIcon />,
-    },
-    ...(siteConfig.socials.whatsappGroup !== "CONFIGURE_URL"
-      ? [
-          {
-            href: siteConfig.socials.whatsappGroup,
-            label: "Join AIML Club WhatsApp group",
-            shortLabel: "Group",
-            icon: <WhatsAppIcon />,
-          },
-        ]
-      : []),
-    {
-      href: siteConfig.socialHub,
-      label: "All AIML Club social links hub",
-      shortLabel: "All Links",
-      icon: <GlobeIcon />,
     },
   ];
 
   return (
     <section aria-label="Connect with AIML Club" className="animate-fade-up delay-500">
       <div className="mb-3 px-1 flex items-center justify-between">
-        <span className="section-label">Connect &amp; Socials</span>
-        <span className="text-[10px] font-mono text-[rgb(var(--text-muted))]">Verified Community</span>
+        <span className="section-label">Connect With Us</span>
+        <span className="text-[10px] font-mono text-[rgb(var(--text-muted))]">Official Community</span>
       </div>
-      <div
-        className="grid gap-2.5 grid-cols-3 sm:grid-cols-4 md:grid-cols-7"
-      >
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-6">
         {items.map((item) => (
           <a
             key={item.href + item.shortLabel}
@@ -148,7 +117,10 @@ export function SocialGrid() {
             <span className="transition-transform duration-200 group-hover:scale-115" aria-hidden="true">
               {item.icon}
             </span>
-            <span className="social-btn-label">{item.shortLabel}</span>
+            <div className="flex items-center gap-1">
+              <span className="social-btn-label">{item.shortLabel}</span>
+              <span className="text-[10px] text-[rgb(var(--text-muted))] group-hover:text-[rgb(var(--accent-lime-bright))] transition-colors" aria-hidden="true">↗</span>
+            </div>
           </a>
         ))}
       </div>
