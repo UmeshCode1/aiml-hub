@@ -33,6 +33,7 @@ export function ThemeToggle() {
 
     setPerfMode(initialPerf);
     document.documentElement.setAttribute("data-performance", initialPerf);
+    document.documentElement.setAttribute("data-thermal", initialPerf);
   }, []);
 
   const triggerToast = (msg: string) => {
@@ -45,15 +46,16 @@ export function ThemeToggle() {
     setTheme(nextTheme);
     document.documentElement.setAttribute("data-theme", nextTheme);
     localStorage.setItem("aiml_hub_theme", nextTheme);
-    triggerToast(nextTheme === "dark" ? "🌙 Dark Theme" : "☀️ Light Theme");
+    triggerToast(nextTheme === "dark" ? "🌙 Dark Theme Active" : "☀️ Light Theme Active");
   };
 
   const togglePerfMode = () => {
     const nextPerf = perfMode === "ultra" ? "saver" : "ultra";
     setPerfMode(nextPerf);
     document.documentElement.setAttribute("data-performance", nextPerf);
+    document.documentElement.setAttribute("data-thermal", nextPerf);
     localStorage.setItem("aiml_hub_perf", nextPerf);
-    triggerToast(nextPerf === "ultra" ? "🚀 Ultra FX Mode" : "🔋 Thermal Saver Mode");
+    triggerToast(nextPerf === "ultra" ? "🚀 Ultra FX Mode Active" : "🔋 Thermal Saver Active");
   };
 
   if (!mounted) {
@@ -67,12 +69,12 @@ export function ThemeToggle() {
 
   return (
     <div className="relative">
-      <div className="top-action-bar" role="toolbar" aria-label="Display & Thermal Controls">
+      <div className="top-action-bar flex items-center gap-1.5 p-1 rounded-full bg-[rgba(var(--bg-surface),0.92)] border border-[rgba(var(--border-default))] shadow-lg backdrop-blur-md">
         {/* Theme Toggle Button */}
         <button
           type="button"
           onClick={toggleTheme}
-          className="action-bar-btn flex items-center gap-1.5 px-2.5 py-1 text-xs font-extrabold rounded-full transition-all active:scale-95"
+          className="action-bar-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold rounded-full transition-all active:scale-95 hover:bg-[rgba(var(--bg-card-hover))]"
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
           title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
         >
@@ -96,7 +98,7 @@ export function ThemeToggle() {
                 <path d="M2 12h2" /><path d="M20 12h2" />
                 <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
               </svg>
-              <span className="text-[11px] font-bold text-amber-400">Dark</span>
+              <span className="text-xs font-bold text-amber-400">Dark</span>
             </>
           ) : (
             <>
@@ -114,7 +116,7 @@ export function ThemeToggle() {
               >
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
               </svg>
-              <span className="text-[11px] font-bold text-cyan-600">Light</span>
+              <span className="text-xs font-bold text-cyan-600">Light</span>
             </>
           )}
         </button>
@@ -126,32 +128,32 @@ export function ThemeToggle() {
         <button
           type="button"
           onClick={togglePerfMode}
-          className={`action-bar-btn flex items-center gap-1 px-2.5 py-1 text-xs font-extrabold rounded-full transition-all active:scale-95 ${
+          className={`action-bar-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold rounded-full transition-all active:scale-95 ${
             perfMode === "ultra"
-              ? "bg-[rgba(var(--accent-cyan),0.12)] text-[rgb(var(--accent-cyan))]"
-              : "bg-[rgba(var(--accent-lime-glow))] text-[rgb(var(--accent-lime-bright))]"
+              ? "bg-[rgba(var(--accent-cyan),0.15)] border border-[rgba(var(--accent-cyan),0.4)] text-[rgb(var(--accent-cyan))]"
+              : "bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent),0.4)] text-[rgb(var(--accent-lime-bright))]"
           }`}
           aria-label={`Toggle performance mode. Current mode: ${perfMode === "ultra" ? "Ultra Visual FX" : "Thermal Saver"}`}
-          title={perfMode === "ultra" ? "Ultra FX (Click to enable Battery Saver)" : "Thermal Saver (Click to enable Ultra FX)"}
+          title={perfMode === "ultra" ? "Ultra FX Active (Click to enable Battery Saver)" : "Thermal Saver Active (Click to enable Ultra FX)"}
         >
           {perfMode === "ultra" ? (
             <>
-              <span className="text-xs" aria-hidden="true">🚀</span>
-              <span className="text-[11px] font-extrabold text-[rgb(var(--accent-cyan))]">FX</span>
+              <span className="text-xs animate-bounce-short" aria-hidden="true">🚀</span>
+              <span className="text-xs font-extrabold text-[rgb(var(--accent-cyan))]">FX</span>
             </>
           ) : (
             <>
               <span className="text-xs" aria-hidden="true">🔋</span>
-              <span className="text-[11px] font-extrabold text-[rgb(var(--accent-lime-bright))]">Saver</span>
+              <span className="text-xs font-extrabold text-[rgb(var(--accent-lime-bright))]">Saver</span>
             </>
           )}
         </button>
       </div>
 
-      {/* Floating Mode Feedback Hint Toast */}
+      {/* Floating Toast Notification */}
       {feedbackToast && (
         <div
-          className="fixed top-14 right-4 z-50 px-3 py-1.5 rounded-full text-xs font-extrabold bg-[rgba(var(--bg-surface),0.95)] border border-[rgba(var(--border-accent))] text-[rgb(var(--accent-lime-bright))] shadow-lg animate-fade-in pointer-events-none"
+          className="fixed top-16 right-4 z-50 px-3.5 py-1.5 rounded-full text-xs font-black bg-[rgba(var(--bg-surface),0.96)] border border-[rgba(var(--border-accent))] text-[rgb(var(--accent-lime-bright))] shadow-xl animate-fade-in pointer-events-none"
           role="status"
         >
           {feedbackToast}

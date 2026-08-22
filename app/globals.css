@@ -54,6 +54,15 @@
   --shadow-hover:   0 8px 32px rgba(0,0,0,0.50);
   --shadow-primary: 0 0 32px rgba(132,204,22,0.22);
 
+/* Low Thermal & Battery Saver Mode Overrides */
+[data-thermal="saver"] *,
+[data-performance="saver"] * {
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
   /* Status badge */
   --badge-bg:    rgba(132,204,22,0.09);
   --badge-text:  163 230 53;
