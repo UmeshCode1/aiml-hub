@@ -119,7 +119,7 @@ export default function Home() {
           <div className="flex items-center justify-center gap-1.5 p-1 rounded-full bg-[rgba(var(--bg-surface))] border border-[rgba(var(--border-default))] mt-5 max-w-md mx-auto shadow-sm">
             {(
               [
-                { id: "all", label: "All Hub" },
+                { id: "all", label: "All" },
                 { id: "official", label: "Official" },
                 { id: "ecosystem", label: "Ecosystem" },
                 { id: "community", label: "Community" },

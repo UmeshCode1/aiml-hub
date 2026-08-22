@@ -11,6 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.digitalHub),
   title: siteConfig.seo.title,
   description: siteConfig.seo.description,
   keywords: [
