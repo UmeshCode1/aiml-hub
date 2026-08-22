@@ -54,15 +54,6 @@
   --shadow-hover:   0 8px 32px rgba(0,0,0,0.50);
   --shadow-primary: 0 0 32px rgba(132,204,22,0.22);
 
-/* Low Thermal & Battery Saver Mode Overrides */
-[data-thermal="saver"] *,
-[data-performance="saver"] * {
-  backdrop-filter: none !important;
-  box-shadow: none !important;
-  transition: none !important;
-  animation: none !important;
-}
-
   /* Status badge */
   --badge-bg:    rgba(132,204,22,0.09);
   --badge-text:  163 230 53;
@@ -82,6 +73,39 @@
   /* Theme toggle icon visibility */
   --sun-display:  none;
   --moon-display: block;
+}
+
+/* Low Thermal & Battery Saver Mode Overrides */
+[data-thermal="saver"] *,
+[data-performance="saver"] * {
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: shimmer 3s infinite;
 }
 
 /* ── Light Theme ──────────────────────────────────────────────────────── */
