@@ -96,7 +96,7 @@ export function ThemeToggle() {
   return (
     <div className="relative">
       <div
-        className={`top-action-bar flex items-center gap-1 p-1 rounded-full bg-[rgba(var(--bg-surface),0.92)] border border-[rgba(var(--border-default))] shadow-md backdrop-blur-md transition-all duration-300 ${
+        className={`top-action-bar flex items-center gap-1.5 p-1 rounded-full bg-[rgba(var(--bg-surface),0.95)] border border-[rgba(var(--border-default))] shadow-lg backdrop-blur-md transition-all duration-300 ${
           isVisible
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 -translate-y-6 pointer-events-none"
@@ -108,7 +108,11 @@ export function ThemeToggle() {
         <button
           type="button"
           onClick={toggleTheme}
-          className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 hover:bg-[rgba(var(--bg-card-hover))]"
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 shadow-sm ${
+            theme === "dark"
+              ? "bg-[rgba(245,158,11,0.15)] border border-[rgba(245,158,11,0.3)] text-amber-400 hover:bg-[rgba(245,158,11,0.25)] shadow-[0_0_10px_rgba(245,158,11,0.2)]"
+              : "bg-[rgba(6,182,212,0.15)] border border-[rgba(6,182,212,0.3)] text-cyan-600 hover:bg-[rgba(6,182,212,0.25)] shadow-[0_0_10px_rgba(6,182,212,0.2)]"
+          }`}
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
           title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
         >
@@ -122,7 +126,7 @@ export function ThemeToggle() {
               strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-amber-400 animate-spin-once"
+              className="animate-spin-once"
               aria-hidden="true"
             >
               <circle cx="12" cy="12" r="4" />
@@ -141,7 +145,7 @@ export function ThemeToggle() {
               strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-cyan-500 animate-spin-once"
+              className="animate-spin-once"
               aria-hidden="true"
             >
               <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
@@ -158,8 +162,8 @@ export function ThemeToggle() {
           onClick={togglePerfMode}
           className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-200 active:scale-90 ${
             perfMode === "ultra"
-              ? "bg-[rgba(var(--accent-cyan),0.15)] border border-[rgba(var(--accent-cyan),0.4)] shadow-[0_0_10px_rgba(34,211,238,0.3)]"
-              : "bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent),0.4)] shadow-[0_0_10px_rgba(132,204,22,0.3)]"
+              ? "bg-[rgba(var(--accent-cyan),0.18)] border border-[rgba(var(--accent-cyan),0.4)] shadow-[0_0_12px_rgba(34,211,238,0.3)]"
+              : "bg-[rgba(var(--accent-lime-glow))] border border-[rgba(var(--border-accent),0.4)] shadow-[0_0_12px_rgba(132,204,22,0.3)]"
           }`}
           aria-label={`Toggle performance mode. Current mode: ${perfMode === "ultra" ? "Ultra Visual FX" : "Thermal Saver"}`}
           title={perfMode === "ultra" ? "Ultra FX Active (Click for Battery Saver)" : "Thermal Saver Active (Click for Ultra FX)"}
@@ -175,7 +179,7 @@ export function ThemeToggle() {
       {/* Floating Toast Hint */}
       {feedbackToast && (
         <div
-          className="fixed top-14 right-4 z-50 px-3 py-1 rounded-full text-xs font-black bg-[rgba(var(--bg-surface),0.96)] border border-[rgba(var(--border-accent))] text-[rgb(var(--accent-lime-bright))] shadow-lg animate-fade-in pointer-events-none"
+          className="fixed top-14 right-4 z-50 px-3.5 py-1.5 rounded-full text-xs font-black bg-[rgba(var(--bg-surface),0.96)] border border-[rgba(var(--border-accent))] text-[rgb(var(--accent-lime-bright))] shadow-xl animate-fade-in pointer-events-none"
           role="status"
         >
           {feedbackToast}

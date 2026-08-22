@@ -109,6 +109,7 @@ export default function RootLayout({
                   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                   var perf = savedPerf || (isLowCores || prefersReduced ? 'saver' : 'ultra');
                   document.documentElement.setAttribute('data-performance', perf);
+                  document.documentElement.setAttribute('data-thermal', perf);
                 } catch (e) {}
               })();
             `,
