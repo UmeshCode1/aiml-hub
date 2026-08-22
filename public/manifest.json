@@ -1,0 +1,26 @@
+{
+  "name": "AIML Club OCT Digital Hub",
+  "short_name": "AIML Club",
+  "description": "AI & Machine Learning Club at Oriental College of Technology, Bhopal — official digital hub",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080a0c",
+  "theme_color": "#080a0c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/aiml-club-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/aiml-club-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "social"],
+  "lang": "en-IN"
+}
