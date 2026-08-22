@@ -84,6 +84,15 @@
   animation: none !important;
 }
 
+[data-thermal="saver"] .ambient-glow-lime,
+[data-thermal="saver"] .ambient-glow-cyan,
+[data-thermal="saver"] .ambient-grid,
+[data-performance="saver"] .ambient-glow-lime,
+[data-performance="saver"] .ambient-glow-cyan,
+[data-performance="saver"] .ambient-grid {
+  display: none !important;
+}
+
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(200%); }
