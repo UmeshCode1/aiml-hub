@@ -3,7 +3,7 @@ import { siteConfig } from "../config/site";
 export function FeedbackCard() {
   return (
     <section
-      aria-label="Feedback and suggestions"
+      aria-label="Feedback and ideas"
       className="animate-fade-up delay-600"
     >
       <div className="mb-3 px-1 flex items-center justify-between">
@@ -21,7 +21,7 @@ export function FeedbackCard() {
             </h2>
           </div>
           <p className="text-xs sm:text-sm leading-relaxed text-[rgb(var(--text-secondary))]">
-            Have an idea for a hackathon, workshop, project, event or club feature? Tell the AIML Club team.
+            Have an idea, suggestion, workshop concept, event idea or feature request? Tell the AIML Club team.
           </p>
         </div>
 
@@ -52,13 +52,13 @@ export function FeedbackCard() {
           </a>
 
           <a
-            href={siteConfig.pages.suggestions}
+            href={siteConfig.pages.contact}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-secondary justify-center text-center shadow-sm"
-            aria-label="Open suggestions box on official website (opens in new tab)"
+            aria-label="Contact AIML Club team on official website (opens in new tab)"
           >
-            <span>Suggestions Box</span>
+            <span>Contact Team</span>
             <span className="text-[10px] opacity-70">↗</span>
           </a>
         </div>

@@ -64,27 +64,6 @@ function IconBookOpen() {
     </svg>
   );
 }
-function IconDrive() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>
-    </svg>
-  );
-}
-function IconScroll() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 3H8.5a1.5 1.5 0 0 0 0 3H14"/><path d="m14 9-2 2 2 2"/>
-    </svg>
-  );
-}
-function IconBell() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
-    </svg>
-  );
-}
 function IconPackage() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -92,15 +71,8 @@ function IconPackage() {
     </svg>
   );
 }
-function IconMessage() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
-  );
-}
 
-type TabType = "all" | "official" | "ecosystem" | "community";
+type TabType = "all" | "official" | "resources" | "community";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabType>("all");
@@ -115,13 +87,13 @@ export default function Home() {
           {/* ── 1. Header / Identity ───────────────────────────────────── */}
           <ClubHeader />
 
-          {/* ── Filter Tabs for Instant Access on all devices ─────────── */}
-          <div className="flex items-center justify-center gap-1.5 p-1 rounded-full bg-[rgba(var(--bg-surface))] border border-[rgba(var(--border-default))] mt-5 max-w-md mx-auto shadow-sm">
+          {/* ── Filter Navigation Bar ──────────────────────────────────── */}
+          <div className="flex items-center justify-center gap-1 p-1 rounded-full bg-[rgba(var(--bg-surface))] border border-[rgba(var(--border-default))] mt-4 max-w-md mx-auto shadow-sm">
             {(
               [
                 { id: "all", label: "All" },
                 { id: "official", label: "Official" },
-                { id: "ecosystem", label: "Ecosystem" },
+                { id: "resources", label: "Resources" },
                 { id: "community", label: "Community" },
               ] as const
             ).map((tab) => {
@@ -131,9 +103,9 @@ export default function Home() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-1.5 px-2 text-xs font-bold rounded-full transition-all duration-200 text-center ${
+                  className={`flex-1 py-1.5 px-2 text-xs font-bold rounded-full transition-all duration-150 text-center min-h-[38px] ${
                     isActive
-                      ? "bg-[linear-gradient(135deg,rgb(var(--accent-lime-bright)),rgb(var(--accent-cyan)))] text-black shadow-sm scale-100 font-extrabold"
+                      ? "bg-[linear-gradient(135deg,rgb(var(--accent-lime-bright)),rgb(var(--accent-cyan)))] text-black shadow-sm font-extrabold"
                       : "text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] hover:bg-[rgba(var(--bg-card-hover))]"
                   }`}
                 >
@@ -143,7 +115,7 @@ export default function Home() {
             })}
           </div>
 
-          <div className="flex flex-col gap-6 mt-6">
+          <div className="flex flex-col gap-5 mt-5">
             {/* ── 2. Primary Voice CTA (always visible on all/official) ──── */}
             {(activeTab === "all" || activeTab === "official") && (
               <PrimaryVoiceCard />
@@ -156,7 +128,7 @@ export default function Home() {
                   href={siteConfig.website}
                   icon={<IconGlobe />}
                   title="AIML Club OCT — Official Website"
-                  description="Explore the complete AIML Club ecosystem and portal."
+                  description="Explore the official AIML Club portal, activities, and community."
                   animationDelay="delay-200"
                   iconBg="rgba(34,211,238,0.12)"
                   iconColor="rgb(34,211,238)"
@@ -166,7 +138,7 @@ export default function Home() {
                   href={siteConfig.pages.events}
                   icon={<IconCalendar />}
                   title="Events &amp; Workshops"
-                  description="Discover workshops, talks, hackathons, and upcoming activities."
+                  description="Discover workshops, hackathons, guest talks, and club sessions."
                   animationDelay="delay-250"
                   iconBg="rgba(59,130,246,0.12)"
                   iconColor="rgb(59,130,246)"
@@ -175,7 +147,7 @@ export default function Home() {
                   href={siteConfig.pages.team}
                   icon={<IconUsers />}
                   title="Our Team &amp; Leads"
-                  description="Meet the core leaders and members building AIML Club OCT."
+                  description="Meet the core student leaders and faculty mentors of AIML Club OCT."
                   animationDelay="delay-300"
                   iconBg="rgba(132,204,22,0.12)"
                   iconColor="rgb(132,204,22)"
@@ -184,7 +156,7 @@ export default function Home() {
                   href={siteConfig.pages.gallery}
                   icon={<IconImage />}
                   title="Gallery"
-                  description="Explore memorable moments from our events and sessions."
+                  description="Browse event highlights, workshop photos, and club memories."
                   animationDelay="delay-350"
                   iconBg="rgba(168,85,247,0.12)"
                   iconColor="rgb(168,85,247)"
@@ -193,7 +165,7 @@ export default function Home() {
                   href={siteConfig.pages.blog}
                   icon={<IconBlog />}
                   title="Blog &amp; Tech Articles"
-                  description="Read technical write-ups, AI insights, and announcements."
+                  description="Read tech write-ups, AI insights, tutorials, and announcements."
                   animationDelay="delay-400"
                   iconBg="rgba(249,115,22,0.12)"
                   iconColor="rgb(249,115,22)"
@@ -201,9 +173,9 @@ export default function Home() {
               </LinkSection>
             )}
 
-            {/* ── 4. AIML Ecosystem ──────────────────────────────────────── */}
-            {(activeTab === "all" || activeTab === "ecosystem") && (
-              <LinkSection label="AIML Ecosystem &amp; Resources">
+            {/* ── 4. Ecosystem & Resources ───────────────────────────────── */}
+            {(activeTab === "all" || activeTab === "resources") && (
+              <LinkSection label="Ecosystem &amp; Resources">
                 <LinkCard
                   href={siteConfig.resources.github}
                   icon={<IconGitHub />}
@@ -215,67 +187,22 @@ export default function Home() {
                   badge="Open Source"
                 />
                 <LinkCard
-                  href={siteConfig.resources.notion}
+                  href={siteConfig.resources.resourcesPortal}
                   icon={<IconBookOpen />}
-                  title="Notion Knowledge Base"
-                  description="Documentation, meeting notes, roadmaps, and event workspaces."
+                  title="AIML Resources Portal"
+                  description="Access official study guides, documentation, and learning paths."
                   animationDelay="delay-450"
                   iconBg="rgba(59,130,246,0.12)"
                   iconColor="rgb(59,130,246)"
-                />
-                <LinkCard
-                  href={siteConfig.resources.drive}
-                  icon={<IconDrive />}
-                  title="Media &amp; Brand Assets Drive"
-                  description="Event photos, logos, branding assets, and promotional materials."
-                  animationDelay="delay-450"
-                  iconBg="rgba(34,197,94,0.12)"
-                  iconColor="rgb(34,197,94)"
-                />
-                <LinkCard
-                  href={siteConfig.pages.constitution}
-                  icon={<IconScroll />}
-                  title="Club Constitution"
-                  description="Official bylaws, structure, and governance of AIML Club OCT."
-                  animationDelay="delay-500"
-                  iconBg="rgba(234,179,8,0.12)"
-                  iconColor="rgb(234,179,8)"
-                />
-                <LinkCard
-                  href={siteConfig.pages.updates}
-                  icon={<IconBell />}
-                  title="Announcements &amp; Updates"
-                  description="Latest notices, workshop dates, and official announcements."
-                  animationDelay="delay-500"
-                  iconBg="rgba(249,115,22,0.12)"
-                  iconColor="rgb(249,115,22)"
-                />
-                <LinkCard
-                  href={siteConfig.pages.suggestions}
-                  icon={<IconMessage />}
-                  title="Suggestions Box"
-                  description="Direct portal to submit suggestions to the AIML Club core team."
-                  animationDelay="delay-550"
-                  iconBg="rgba(132,204,22,0.12)"
-                  iconColor="rgb(132,204,22)"
                 />
                 <LinkCard
                   href={siteConfig.resources.apkDrive}
                   icon={<IconPackage />}
                   title="APK Distribution Drive"
                   description="Download AIML Club official apps and test releases."
-                  animationDelay="delay-550"
+                  animationDelay="delay-500"
                   iconBg="rgba(168,85,247,0.12)"
                   iconColor="rgb(168,85,247)"
-                />
-                <LinkCard
-                  href={siteConfig.socialHub}
-                  icon={<IconGlobe />}
-                  title="Social Links Hub"
-                  description="Complete social directory on social.aimlclub.tech."
-                  animationDelay="delay-600"
-                  iconBg="rgba(34,211,238,0.12)"
-                  iconColor="rgb(34,211,238)"
                 />
               </LinkSection>
             )}
@@ -285,7 +212,7 @@ export default function Home() {
               <SocialGrid />
             )}
 
-            {/* ── 6. Feedback ────────────────────────────────────────────── */}
+            {/* ── 6. Feedback Section ────────────────────────────────────── */}
             {(activeTab === "all" || activeTab === "community") && (
               <FeedbackCard />
             )}
