@@ -3,7 +3,9 @@
  * HTML & Inline CSS formatted for universal email client compatibility (Gmail, Outlook, Apple Mail)
  */
 
-export function getWelcomeEmailHtml(): string {
+export function getWelcomeEmailHtml(recipientEmail?: string): string {
+  const displayEmail = recipientEmail || "Student / Member";
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +61,7 @@ export function getWelcomeEmailHtml(): string {
               </h2>
               
               <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #cbd5e1;">
-                You are officially subscribed to <strong>AIML Club OCT updates</strong>. You'll be the first to know about upcoming hackathons, AI/ML workshops, open-source projects, tech blogs, and club announcements.
+                Hello <strong style="color: #a3e635;">${displayEmail}</strong>, you are officially subscribed to <strong>AIML Club OCT updates</strong>. You'll be the first to know about upcoming hackathons, AI/ML workshops, open-source projects, tech blogs, and official club announcements.
               </p>
 
               <!-- Feature Highlights Box -->

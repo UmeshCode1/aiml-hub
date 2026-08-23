@@ -19,7 +19,7 @@ export interface SubscribeResponse {
  */
 async function sendWelcomeEmailBrevo(email: string, apiKey: string): Promise<void> {
   try {
-    const htmlContent = getWelcomeEmailHtml();
+    const htmlContent = getWelcomeEmailHtml(email);
     await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
