@@ -87,7 +87,7 @@ export function ThemeToggle() {
 
   return (
     <div
-      className={`top-action-bar flex items-center gap-1.5 p-1 rounded-full bg-[rgba(var(--bg-surface),0.95)] border border-[rgba(var(--border-default))] shadow-lg backdrop-blur-md transition-all duration-300 ${
+      className={`top-action-bar flex items-center gap-1.5 p-1 rounded-full shadow-lg backdrop-blur-md transition-all duration-300 ${
         isVisible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 -translate-y-6 pointer-events-none"

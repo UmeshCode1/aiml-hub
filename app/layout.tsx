@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/aiml-club-logo.png", type: "image/png" },
-      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
     ],
     shortcut: ["/aiml-club-logo.png"],
     apple: [

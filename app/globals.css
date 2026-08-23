@@ -70,6 +70,10 @@
   --qr-bg:       #ffffff;
   --qr-fg:       #080a0c;
 
+  /* Theme toggle action bar */
+  --action-bar-bg:     rgba(12, 16, 20, 0.85);
+  --action-bar-border: rgba(255, 255, 255, 0.12);
+
   /* Theme toggle icon visibility */
   --sun-display:  none;
   --moon-display: block;
@@ -168,6 +172,10 @@
 
   --qr-bg:       #ffffff;
   --qr-fg:       #0f172a;
+
+  /* Theme toggle action bar */
+  --action-bar-bg:     rgba(255, 255, 255, 0.90);
+  --action-bar-border: rgba(0, 0, 0, 0.12);
 
   --sun-display:  block;
   --moon-display: none;
@@ -463,8 +471,8 @@ a   { text-decoration: none; }
   gap: 0.5rem;
   padding: 0.25rem;
   border-radius: 9999px;
-  background: rgba(12, 16, 20, 0.92);
-  border: 1px solid rgba(var(--border-default));
+  background: var(--action-bar-bg);
+  border: 1px solid var(--action-bar-border);
   box-shadow: var(--shadow-card);
 }
 
