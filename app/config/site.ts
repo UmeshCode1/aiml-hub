@@ -17,6 +17,7 @@ export const siteConfig = {
   // ── Primary URLs ──────────────────────────────────────────────────────────
   website: "https://aimlcluboct.in",
   voice: "https://voice.aimlcluboct.in",
+  live: "https://live.aimlcluboct.in",
   digitalHub: "https://social.aimlcluboct.in",
   socialHub: "https://social.aimlclub.tech",
   legacySocialHub: "https://social.aimlclub.tech",
