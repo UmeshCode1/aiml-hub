@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     }
 
     // 2. Parse JSON body safely
-    let body: { email?: string; whatsapp?: string; branch?: string; year?: string; college?: string };
+    let body: { email?: string; name?: string; whatsapp?: string; branch?: string; year?: string; college?: string };
     try {
       body = await request.json();
     } catch {
@@ -68,6 +68,7 @@ export async function POST(request: Request) {
     }
 
     const rawEmail = body?.email;
+    const name = typeof body?.name === "string" ? body.name : undefined;
     const whatsapp = typeof body?.whatsapp === "string" ? body.whatsapp : undefined;
     const branch = typeof body?.branch === "string" ? body.branch : undefined;
     const year = typeof body?.year === "string" ? body.year : undefined;
@@ -99,7 +100,7 @@ export async function POST(request: Request) {
     }
 
     // 4. Execute subscription via newsletter service adapter
-    const result = await addSubscriber({ email, whatsapp, branch, year, college });
+    const result = await addSubscriber({ email, name, whatsapp, branch, year, college });
 
     if (!result.success) {
       return NextResponse.json(

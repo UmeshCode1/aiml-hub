@@ -3,8 +3,8 @@
  * HTML & Inline CSS formatted for 100% universal email client rendering (Gmail, Outlook, Apple Mail, Yahoo)
  */
 
-export function getWelcomeEmailHtml(recipientEmail?: string): string {
-  const displayEmail = recipientEmail || "Student / Member";
+export function getWelcomeEmailHtml(recipientEmail?: string, recipientName?: string): string {
+  const displayName = recipientName?.trim() || recipientEmail?.trim() || "Student / Member";
   const currentYear = new Date().getFullYear();
 
   return `<!DOCTYPE html>
@@ -69,7 +69,7 @@ export function getWelcomeEmailHtml(recipientEmail?: string): string {
               </h2>
               
               <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #cbd5e1;">
-                Hello <strong style="color: #a3e635;">${displayEmail}</strong>, you are officially subscribed to <strong>AIML Club OCT updates</strong>. You'll be the first to receive important notices, workshop announcements, hackathon alerts, project roadmaps, and tech articles.
+                Hello <strong style="color: #a3e635;">${displayName}</strong>, you are officially subscribed to <strong>AIML Club OCT updates</strong>. You'll be the first to receive important notices, workshop announcements, hackathon alerts, project roadmaps, and tech articles.
               </p>
 
               <!-- WHAT TO EXPECT BOX -->
@@ -102,7 +102,7 @@ export function getWelcomeEmailHtml(recipientEmail?: string): string {
                       <tr>
                         <td width="28" valign="top" style="font-size: 16px;">🎙️</td>
                         <td style="font-size: 13px; color: #e2e8f0; line-height: 1.5;">
-                          <strong>Voice of AIML Club:</strong> Share your workshop requests, project ideas, and feedback directly with club leads.
+                          <strong>Your Voice Matters:</strong> Direct channel to share project ideas, workshop requests, and feedback with club leads.
                         </td>
                       </tr>
                     </table>

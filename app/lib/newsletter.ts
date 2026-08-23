@@ -2,6 +2,7 @@ import { getWelcomeEmailHtml } from "./email-template";
 
 export interface SubscribeParams {
   email: string;
+  name?: string;
   whatsapp?: string;
   branch?: string;
   year?: string;
@@ -17,9 +18,10 @@ export interface SubscribeResponse {
 /**
  * Sends welcome email via Brevo Transactional Email API (v3)
  */
-async function sendWelcomeEmailBrevo(email: string, apiKey: string): Promise<void> {
+async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: string): Promise<void> {
   try {
-    const htmlContent = getWelcomeEmailHtml(email);
+    if (!apiKey) return;
+    const htmlContent = getWelcomeEmailHtml(email, name);
     await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
@@ -32,7 +34,7 @@ async function sendWelcomeEmailBrevo(email: string, apiKey: string): Promise<voi
           name: "AI & Machine Learning Club OCT",
           email: "aimlcluboct@gmail.com",
         },
-        to: [{ email }],
+        to: [{ email, name: name || email }],
         subject: "Welcome to AIML Club OCT — You're Subscribed! 🚀",
         htmlContent,
       }),
@@ -70,10 +72,14 @@ async function subscribeBrevo(
   listIdStr?: string
 ): Promise<SubscribeResponse> {
   try {
-    const { email, whatsapp, branch, year, college } = params;
+    const { email, name, whatsapp, branch, year, college } = params;
     const listIds = listIdStr ? [parseInt(listIdStr, 10)].filter((n) => !isNaN(n)) : [];
 
     const attributes: Record<string, string> = {};
+    if (name?.trim()) {
+      attributes.FIRSTNAME = name.trim();
+      attributes.NAME = name.trim();
+    }
     if (whatsapp?.trim()) attributes.SMS = whatsapp.trim();
     if (whatsapp?.trim()) attributes.WHATSAPP = whatsapp.trim();
     if (branch?.trim()) attributes.BRANCH = branch.trim();
@@ -105,7 +111,7 @@ async function subscribeBrevo(
 
     if (response.ok || response.status === 201 || response.status === 204) {
       // Trigger welcome email asynchronously
-      sendWelcomeEmailBrevo(email, apiKey).catch(() => {});
+      sendWelcomeEmailBrevo(email, name, apiKey).catch(() => {});
 
       return {
         success: true,

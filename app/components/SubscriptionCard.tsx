@@ -6,6 +6,7 @@ type SubmissionState = "idle" | "loading" | "success" | "already_subscribed" | "
 
 export function SubscriptionCard() {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [branch, setBranch] = useState("");
   const [year, setYear] = useState("");
@@ -38,6 +39,7 @@ export function SubscriptionCard() {
         },
         body: JSON.stringify({
           email: normalized,
+          name: name.trim() || undefined,
           whatsapp: whatsapp.trim() || undefined,
           branch: branch.trim() || undefined,
           year: year.trim() || undefined,
@@ -55,6 +57,7 @@ export function SubscriptionCard() {
           setState("success");
           setFeedbackMessage(data.message || "You're in. We'll keep you updated.");
           setEmail("");
+          setName("");
           setWhatsapp("");
           setBranch("");
           setYear("");
@@ -204,13 +207,27 @@ export function SubscriptionCard() {
                 onClick={() => setShowOptionalFields(!showOptionalFields)}
                 className="text-[11px] font-bold text-[rgb(var(--accent-cyan))] hover:underline flex items-center gap-1 transition-all"
               >
-                <span>{showOptionalFields ? "− Hide Optional Details" : "+ Add Optional Details (WhatsApp, Branch, Year, College)"}</span>
+                <span>{showOptionalFields ? "− Hide Optional Details" : "+ Add Optional Details (Name, WhatsApp, Branch, Year, College)"}</span>
               </button>
             </div>
 
             {/* Optional Fields Container */}
             {showOptionalFields && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-3 rounded-xl bg-[rgba(var(--bg-card),0.5)] border border-[rgba(var(--border-default))] animate-fade-in">
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase text-[rgb(var(--text-muted))] mb-1">
+                    Full Name <span className="font-normal lowercase opacity-70">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Umesh Kumar"
+                    disabled={state === "loading"}
+                    className="w-full h-9 px-3 text-xs rounded-lg bg-[rgba(var(--bg-input))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-muted))] focus:outline-none focus:border-[rgb(var(--accent-cyan))]"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-[10px] font-extrabold uppercase text-[rgb(var(--text-muted))] mb-1">
                     WhatsApp No. <span className="font-normal lowercase opacity-70">(optional)</span>
