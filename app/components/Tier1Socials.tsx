@@ -50,13 +50,13 @@ function LinkedInIcon() {
 export function Tier1Socials() {
   const primaryLinks = [
     {
-      name: "Instagram",
-      handle: "@aimlcluboct",
-      description: "Official Instagram Page",
-      url: siteConfig.socials.instagram,
-      icon: <InstagramIcon />,
-      badge: "Primary",
-      borderGlow: "hover:border-[#E4405F]/50",
+      name: "WhatsApp Group",
+      handle: "Official Student Group",
+      description: "Student Community & Discussion",
+      url: siteConfig.socials.whatsappGroup,
+      icon: <WhatsAppIcon />,
+      badge: "Community",
+      borderGlow: "hover:border-[#25D366]/50",
     },
     {
       name: "WhatsApp Channel",
@@ -66,6 +66,15 @@ export function Tier1Socials() {
       icon: <WhatsAppIcon />,
       badge: "Updates",
       borderGlow: "hover:border-[#25D366]/50",
+    },
+    {
+      name: "Instagram",
+      handle: "@aimlcluboct",
+      description: "Official Instagram Page",
+      url: siteConfig.socials.instagram,
+      icon: <InstagramIcon />,
+      badge: "Primary",
+      borderGlow: "hover:border-[#E4405F]/50",
     },
     {
       name: "Official Website",

@@ -57,7 +57,8 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/aimlcluboct",
     instagramPhotopia: "https://www.instagram.com/photopia_",
     commudle: "https://www.commudle.com/communities/ai-ml-club",
-    whatsappChannel: "https://aimlcluboct.in/resources",
+    whatsappChannel: "https://whatsapp.com/channel/0029VbAthv38V0tfulumuV1D",
+    whatsappGroup: "https://chat.whatsapp.com/ITBTDOgerQVLnw9dq7jxN6?s=cl&p=a&ilr=0",
   },
 } as const;
 

@@ -61,6 +61,18 @@ interface SocialItem {
 export function SocialGrid() {
   const items: SocialItem[] = [
     {
+      href: siteConfig.socials.whatsappGroup,
+      label: "Join AIML Club official WhatsApp Group",
+      shortLabel: "WA Group",
+      icon: <WhatsAppIcon />,
+    },
+    {
+      href: siteConfig.socials.whatsappChannel,
+      label: "Join AIML Club official WhatsApp Channel",
+      shortLabel: "WA Channel",
+      icon: <WhatsAppIcon />,
+    },
+    {
       href: siteConfig.socials.linkedin,
       label: "Follow AIML Club OCT on LinkedIn",
       shortLabel: "LinkedIn",
@@ -79,22 +91,10 @@ export function SocialGrid() {
       icon: <InstagramIcon color="#E4405F" />,
     },
     {
-      href: siteConfig.socials.instagramPhotopia,
-      label: "Follow AIML Club Photopia on Instagram",
-      shortLabel: "Photopia",
-      icon: <InstagramIcon color="#A855F7" />,
-    },
-    {
       href: siteConfig.socials.commudle,
       label: "Join AIML Club OCT community on Commudle",
       shortLabel: "Commudle",
       icon: <CommudleIcon />,
-    },
-    {
-      href: siteConfig.socials.whatsappChannel,
-      label: "Join AIML Club official WhatsApp Channel",
-      shortLabel: "WhatsApp",
-      icon: <WhatsAppIcon />,
     },
   ];
 
