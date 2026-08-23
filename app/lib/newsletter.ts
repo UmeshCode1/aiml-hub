@@ -131,10 +131,13 @@ async function subscribeBrevo(
       msg.includes("already exists") ||
       msg.includes("duplicate")
     ) {
+      // Trigger confirmation email for existing subscribers as well
+      sendWelcomeEmailBrevo(email, name, apiKey).catch(() => {});
+
       return {
         success: true,
         status: "already_subscribed",
-        message: "You're already on the list.",
+        message: "You're already on the list! We've sent a confirmation email to your inbox.",
       };
     }
 
