@@ -1,7 +1,4 @@
-/**
- * AIML Club OCT — Modular Email Subscription Service Adapter
- * Supports Brevo (Sendinblue API v3), Resend, and Fallback mode.
- */
+import { getWelcomeEmailHtml } from "./email-template";
 
 export interface SubscribeParams {
   email: string;
@@ -11,6 +8,34 @@ export interface SubscribeResponse {
   success: boolean;
   status: "success" | "already_subscribed" | "error";
   message: string;
+}
+
+/**
+ * Sends welcome email via Brevo Transactional Email API (v3)
+ */
+async function sendWelcomeEmailBrevo(email: string, apiKey: string): Promise<void> {
+  try {
+    const htmlContent = getWelcomeEmailHtml();
+    await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "AI & Machine Learning Club OCT",
+          email: "aimlcluboct@gmail.com",
+        },
+        to: [{ email }],
+        subject: "Welcome to AIML Club OCT — You're Subscribed! 🚀",
+        htmlContent,
+      }),
+    });
+  } catch (err) {
+    console.error("[Brevo Transactional Email Exception]", err);
+  }
 }
 
 /**
@@ -27,13 +52,12 @@ export function isValidEmail(email: string): boolean {
   if (!email || typeof email !== "string" || email.length > 254) {
     return false;
   }
-  // Standard email validation regex
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
   return emailRegex.test(email);
 }
 
 /**
- * Adds a contact to Brevo (Sendinblue API v3)
+ * Adds a contact to Brevo (Sendinblue API v3) and triggers welcome email
  * API Spec: POST https://api.brevo.com/v3/contacts
  */
 async function subscribeBrevo(
@@ -64,6 +88,9 @@ async function subscribeBrevo(
     });
 
     if (response.ok || response.status === 201 || response.status === 204) {
+      // Trigger welcome email asynchronously
+      sendWelcomeEmailBrevo(email, apiKey).catch(() => {});
+
       return {
         success: true,
         status: "success",
