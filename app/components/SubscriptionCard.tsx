@@ -6,6 +6,12 @@ type SubmissionState = "idle" | "loading" | "success" | "already_subscribed" | "
 
 export function SubscriptionCard() {
   const [email, setEmail] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [branch, setBranch] = useState("");
+  const [year, setYear] = useState("");
+  const [college, setCollege] = useState("");
+  const [showOptionalFields, setShowOptionalFields] = useState(false);
+
   const [state, setState] = useState<SubmissionState>("idle");
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
@@ -30,7 +36,13 @@ export function SubscriptionCard() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: normalized }),
+        body: JSON.stringify({
+          email: normalized,
+          whatsapp: whatsapp.trim() || undefined,
+          branch: branch.trim() || undefined,
+          year: year.trim() || undefined,
+          college: college.trim() || undefined,
+        }),
       });
 
       const data = await response.json();
@@ -43,6 +55,10 @@ export function SubscriptionCard() {
           setState("success");
           setFeedbackMessage(data.message || "You're in. We'll keep you updated.");
           setEmail("");
+          setWhatsapp("");
+          setBranch("");
+          setYear("");
+          setCollege("");
         }
       } else {
         setState("error");
@@ -108,7 +124,7 @@ export function SubscriptionCard() {
           </div>
 
           {/* Form Input & Submission */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2.5 pt-1" noValidate>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3 pt-1" noValidate>
             <div className="flex flex-col sm:flex-row items-stretch gap-2">
               <div className="relative flex-1">
                 <input
@@ -121,7 +137,7 @@ export function SubscriptionCard() {
                       setFeedbackMessage("");
                     }
                   }}
-                  placeholder="Enter your email address"
+                  placeholder="Enter your email address *"
                   disabled={state === "loading"}
                   required
                   aria-label="Enter your email address for AIML Club OCT updates"
@@ -180,6 +196,83 @@ export function SubscriptionCard() {
                 )}
               </button>
             </div>
+
+            {/* Optional Details Expander Toggle */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowOptionalFields(!showOptionalFields)}
+                className="text-[11px] font-bold text-[rgb(var(--accent-cyan))] hover:underline flex items-center gap-1 transition-all"
+              >
+                <span>{showOptionalFields ? "− Hide Optional Details" : "+ Add Optional Details (WhatsApp, Branch, Year, College)"}</span>
+              </button>
+            </div>
+
+            {/* Optional Fields Container */}
+            {showOptionalFields && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-3 rounded-xl bg-[rgba(var(--bg-card),0.5)] border border-[rgba(var(--border-default))] animate-fade-in">
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase text-[rgb(var(--text-muted))] mb-1">
+                    WhatsApp No. <span className="font-normal lowercase opacity-70">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    value={whatsapp}
+                    onChange={(e) => setWhatsapp(e.target.value)}
+                    placeholder="e.g. +91 9876543210"
+                    disabled={state === "loading"}
+                    className="w-full h-9 px-3 text-xs rounded-lg bg-[rgba(var(--bg-input))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-muted))] focus:outline-none focus:border-[rgb(var(--accent-cyan))]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase text-[rgb(var(--text-muted))] mb-1">
+                    Branch <span className="font-normal lowercase opacity-70">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={branch}
+                    onChange={(e) => setBranch(e.target.value)}
+                    placeholder="e.g. AIML, CSE, IT"
+                    disabled={state === "loading"}
+                    className="w-full h-9 px-3 text-xs rounded-lg bg-[rgba(var(--bg-input))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-muted))] focus:outline-none focus:border-[rgb(var(--accent-cyan))]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase text-[rgb(var(--text-muted))] mb-1">
+                    Year <span className="font-normal lowercase opacity-70">(optional)</span>
+                  </label>
+                  <select
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    disabled={state === "loading"}
+                    className="w-full h-9 px-3 text-xs rounded-lg bg-[rgba(var(--bg-input))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-primary))] focus:outline-none focus:border-[rgb(var(--accent-cyan))]"
+                  >
+                    <option value="">Select Year (Optional)</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                    <option value="Alumni / Other">Alumni / Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase text-[rgb(var(--text-muted))] mb-1">
+                    College <span className="font-normal lowercase opacity-70">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={college}
+                    onChange={(e) => setCollege(e.target.value)}
+                    placeholder="e.g. OCT Bhopal"
+                    disabled={state === "loading"}
+                    className="w-full h-9 px-3 text-xs rounded-lg bg-[rgba(var(--bg-input))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-muted))] focus:outline-none focus:border-[rgb(var(--accent-cyan))]"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Dynamic Status Feedback Banner */}
             {state !== "idle" && state !== "loading" && feedbackMessage && (

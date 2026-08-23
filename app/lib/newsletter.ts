@@ -2,6 +2,10 @@ import { getWelcomeEmailHtml } from "./email-template";
 
 export interface SubscribeParams {
   email: string;
+  whatsapp?: string;
+  branch?: string;
+  year?: string;
+  college?: string;
 }
 
 export interface SubscribeResponse {
@@ -61,12 +65,20 @@ export function isValidEmail(email: string): boolean {
  * API Spec: POST https://api.brevo.com/v3/contacts
  */
 async function subscribeBrevo(
-  email: string,
+  params: SubscribeParams,
   apiKey: string,
   listIdStr?: string
 ): Promise<SubscribeResponse> {
   try {
+    const { email, whatsapp, branch, year, college } = params;
     const listIds = listIdStr ? [parseInt(listIdStr, 10)].filter((n) => !isNaN(n)) : [];
+
+    const attributes: Record<string, string> = {};
+    if (whatsapp?.trim()) attributes.SMS = whatsapp.trim();
+    if (whatsapp?.trim()) attributes.WHATSAPP = whatsapp.trim();
+    if (branch?.trim()) attributes.BRANCH = branch.trim();
+    if (year?.trim()) attributes.YEAR = year.trim();
+    if (college?.trim()) attributes.COLLEGE = college.trim();
 
     const bodyData: Record<string, unknown> = {
       email,
@@ -75,6 +87,10 @@ async function subscribeBrevo(
 
     if (listIds.length > 0) {
       bodyData.listIds = listIds;
+    }
+
+    if (Object.keys(attributes).length > 0) {
+      bodyData.attributes = attributes;
     }
 
     const response = await fetch("https://api.brevo.com/v3/contacts", {
@@ -135,14 +151,14 @@ async function subscribeBrevo(
 
 /**
  * Adds a contact to Resend Audiences (API v1)
- * API Spec: POST https://api.resend.com/audiences/:audience_id/contacts
  */
 async function subscribeResend(
-  email: string,
+  params: SubscribeParams,
   apiKey: string,
   audienceId?: string
 ): Promise<SubscribeResponse> {
   try {
+    const { email } = params;
     const endpoint = audienceId
       ? `https://api.resend.com/audiences/${audienceId}/contacts`
       : `https://api.resend.com/contacts`;
@@ -195,8 +211,8 @@ async function subscribeResend(
 /**
  * Main subscription dispatcher based on process.env configuration
  */
-export async function addSubscriber(rawEmail: string): Promise<SubscribeResponse> {
-  const email = normalizeEmail(rawEmail);
+export async function addSubscriber(params: SubscribeParams): Promise<SubscribeResponse> {
+  const email = normalizeEmail(params.email);
 
   if (!isValidEmail(email)) {
     return {
@@ -205,6 +221,11 @@ export async function addSubscriber(rawEmail: string): Promise<SubscribeResponse
       message: "Please enter a valid email address.",
     };
   }
+
+  const cleanParams: SubscribeParams = {
+    ...params,
+    email,
+  };
 
   const provider = (process.env.EMAIL_PROVIDER || "brevo").toLowerCase();
   const apiKey = process.env.EMAIL_API_KEY;
@@ -224,10 +245,10 @@ export async function addSubscriber(rawEmail: string): Promise<SubscribeResponse
 
   switch (provider) {
     case "resend":
-      return subscribeResend(email, apiKey, listId);
+      return subscribeResend(cleanParams, apiKey, listId);
     case "brevo":
     case "sendinblue":
     default:
-      return subscribeBrevo(email, apiKey, listId);
+      return subscribeBrevo(cleanParams, apiKey, listId);
   }
 }
