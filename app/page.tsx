@@ -8,6 +8,7 @@ import { Tier1Socials } from "./components/Tier1Socials";
 import { Tier2Ecosystem } from "./components/Tier2Ecosystem";
 import { PrimaryVoiceCard } from "./components/PrimaryVoiceCard";
 import { LiveUpdatesCard } from "./components/LiveUpdatesCard";
+import { SubscriptionCard } from "./components/SubscriptionCard";
 import { FeedbackCard } from "./components/FeedbackCard";
 import { QRCodeCard } from "./components/QRCodeCard";
 import { Footer } from "./components/Footer";
@@ -72,6 +73,11 @@ export default function Home() {
             {/* ── Real-Time Live Updates Section ─────────────────────── */}
             {(activeTab === "all" || activeTab === "official" || activeTab === "resources") && (
               <LiveUpdatesCard />
+            )}
+
+            {/* ── Email Subscription Section ──────────────────────────── */}
+            {(activeTab === "all" || activeTab === "official" || activeTab === "social") && (
+              <SubscriptionCard />
             )}
 
             {/* ── Tier 2: Compact Secondary Ecosystem & Community Links ─ */}
