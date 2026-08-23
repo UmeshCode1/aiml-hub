@@ -12,19 +12,23 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.digitalHub),
-  title: siteConfig.seo.title,
-  description: siteConfig.seo.description,
+  title: "AI & Machine Learning Club OCT | Official Social Hub & Linktree",
+  description:
+    "Official AIML Club OCT Digital Hub at Oriental College of Technology, Bhopal. Access hackathons, workshops, AI resources, social links, and real-time updates.",
   keywords: [
-    "AI",
-    "Machine Learning",
-    "AIML Club",
+    "AIML Club OCT",
+    "social.aimlcluboct.in",
+    "aimlcluboct",
+    "AI Machine Learning Club",
     "Oriental College of Technology",
     "OCT Bhopal",
+    "AIML Club Bhopal",
     "Student Club",
     "Artificial Intelligence",
     "Deep Learning",
     "Data Science",
-    "Bhopal",
+    "AIML Linktree",
+    "AIML Digital Hub",
   ],
   authors: [{ name: "AI & Machine Learning Club OCT" }],
   creator: "AI & Machine Learning Club OCT",
@@ -38,8 +42,9 @@ export const metadata: Metadata = {
     type: "website",
     url: siteConfig.digitalHub,
     siteName: siteConfig.clubName,
-    title: siteConfig.seo.title,
-    description: siteConfig.seo.description,
+    title: "AI & Machine Learning Club OCT | Official Social Hub",
+    description:
+      "Official AIML Club OCT Digital Hub at Oriental College of Technology, Bhopal. Access hackathons, workshops, AI resources, social links, and real-time updates.",
     locale: "en_IN",
     images: [
       {
@@ -52,8 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.seo.title,
-    description: siteConfig.seo.description,
+    title: "AI & Machine Learning Club OCT | Official Social Hub",
+    description:
+      "Official AIML Club OCT Digital Hub at Oriental College of Technology, Bhopal.",
     images: ["/aiml-club-logo.png"],
   },
   manifest: "/manifest.json",
@@ -84,6 +90,39 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "AI & Machine Learning Club OCT",
+  "alternateName": [
+    "AIML Club OCT",
+    "AIML Club Bhopal",
+    "AIML Club Oriental College of Technology",
+    "aimlcluboct"
+  ],
+  "url": "https://social.aimlcluboct.in",
+  "logo": "https://social.aimlcluboct.in/aiml-club-logo.png",
+  "image": "https://social.aimlcluboct.in/aiml-club-logo.png",
+  "description":
+    "Official AIML Club OCT Digital Hub at Oriental College of Technology, Bhopal. Access hackathons, workshops, AI resources, social links, and real-time updates.",
+  "parentOrganization": {
+    "@type": "CollegeOrUniversity",
+    "name": "Oriental College of Technology, Bhopal",
+    "url": "https://aimlcluboct.in"
+  },
+  "sameAs": [
+    "https://aimlcluboct.in",
+    "https://live.aimlcluboct.in",
+    "https://voice.aimlcluboct.in",
+    "https://www.linkedin.com/company/aimlcluboct",
+    "https://github.com/aimlcluboct",
+    "https://www.instagram.com/aimlcluboct",
+    "https://whatsapp.com/channel/0029VbAthv38V0tfulumuV1D",
+    "https://chat.whatsapp.com/ITBTDOgerQVLnw9dq7jxN6?s=cl&p=a&ilr=0",
+    "https://www.commudle.com/communities/ai-ml-club"
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -95,6 +134,10 @@ export default function RootLayout({
         <link rel="icon" href="/aiml-club-logo.png" type="image/png" sizes="any" />
         <link rel="shortcut icon" href="/aiml-club-logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/aiml-club-logo.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
