@@ -4,7 +4,7 @@
  */
 
 export function getWelcomeEmailHtml(recipientEmail?: string, recipientName?: string): string {
-  const displayName = recipientName?.trim() || recipientEmail?.trim() || "Student / Member";
+  const displayName = recipientName && recipientName.trim().length > 0 ? recipientName.trim() : "AIML Club Member";
   const currentYear = new Date().getFullYear();
 
   return `<!DOCTYPE html>
