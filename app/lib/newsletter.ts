@@ -46,7 +46,7 @@ async function subscribeBrevo(
 
     const bodyData: Record<string, unknown> = {
       email,
-      updateEnabled: true,
+      updateEnabled: false,
     };
 
     if (listIds.length > 0) {

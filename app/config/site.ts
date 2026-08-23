@@ -13,6 +13,7 @@ export const siteConfig = {
   description:
     "A student-driven ecosystem for learning, building and exploring Artificial Intelligence & Machine Learning.",
   established: "2025",
+  email: "aimlcluboct@gmail.com",
 
   // ── Primary URLs ──────────────────────────────────────────────────────────
   website: "https://aimlcluboct.in",
