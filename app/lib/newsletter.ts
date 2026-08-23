@@ -20,9 +20,12 @@ export interface SubscribeResponse {
  */
 async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: string): Promise<void> {
   try {
-    if (!apiKey) return;
+    if (!apiKey) {
+      console.error("[Brevo Transactional Email Error] Missing API Key");
+      return;
+    }
     const htmlContent = getWelcomeEmailHtml(email, name);
-    await fetch("https://api.brevo.com/v3/smtp/email", {
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
         "accept": "application/json",
@@ -39,6 +42,14 @@ async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: stri
         htmlContent,
       }),
     });
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => "");
+      console.error("[Brevo Transactional Email Failed]", response.status, errText);
+    } else {
+      const data = await response.json().catch(() => ({}));
+      console.log("[Brevo Transactional Email Success]", email, data?.messageId || "sent");
+    }
   } catch (err) {
     console.error("[Brevo Transactional Email Exception]", err);
   }
@@ -110,8 +121,8 @@ async function subscribeBrevo(
     });
 
     if (response.ok || response.status === 201 || response.status === 204) {
-      // Trigger welcome email asynchronously
-      sendWelcomeEmailBrevo(email, name, apiKey).catch(() => {});
+      // Must await sendWelcomeEmailBrevo so Vercel container does not terminate prematurely
+      await sendWelcomeEmailBrevo(email, name, apiKey);
 
       return {
         success: true,
@@ -131,8 +142,8 @@ async function subscribeBrevo(
       msg.includes("already exists") ||
       msg.includes("duplicate")
     ) {
-      // Trigger confirmation email for existing subscribers as well
-      sendWelcomeEmailBrevo(email, name, apiKey).catch(() => {});
+      // Must await sendWelcomeEmailBrevo for existing subscribers as well
+      await sendWelcomeEmailBrevo(email, name, apiKey);
 
       return {
         success: true,
