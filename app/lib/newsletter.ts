@@ -16,14 +16,39 @@ export interface SubscribeResponse {
 }
 
 /**
- * Sends welcome email via Brevo Transactional Email API (v3)
+ * Updates contact attributes in Brevo (e.g. WELCOME_SENT)
  */
-async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: string): Promise<void> {
+async function updateContactAttributesBrevo(
+  email: string,
+  attributes: Record<string, string>,
+  apiKey: string
+): Promise<void> {
+  try {
+    await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`, {
+      method: "PUT",
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify({ attributes }),
+    });
+  } catch (err) {
+    console.error("[Brevo Contact Update Attribute Error]", err);
+  }
+}
+
+/**
+ * Sends welcome email via Brevo Transactional Email API (v3)
+ * Returns true if email was delivered to SMTP relay, false if failed or quota limit reached.
+ */
+async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: string): Promise<boolean> {
   try {
     if (!apiKey) {
       console.error("[Brevo Transactional Email Error] Missing API Key");
-      return;
+      return false;
     }
+
     const htmlContent = getWelcomeEmailHtml(email, name);
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
@@ -46,12 +71,21 @@ async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: stri
     if (!response.ok) {
       const errText = await response.text().catch(() => "");
       console.error("[Brevo Transactional Email Failed]", response.status, errText);
-    } else {
-      const data = await response.json().catch(() => ({}));
-      console.log("[Brevo Transactional Email Success]", email, data?.messageId || "sent");
+      // Mark WELCOME_SENT as false so automated retry system will re-send when quota resets
+      if (apiKey) updateContactAttributesBrevo(email, { WELCOME_SENT: "false" }, apiKey).catch(() => {});
+      return false;
     }
+
+    const data = await response.json().catch(() => ({}));
+    console.log("[Brevo Transactional Email Success]", email, data?.messageId || "sent");
+
+    // Mark WELCOME_SENT as true
+    if (apiKey) updateContactAttributesBrevo(email, { WELCOME_SENT: "true" }, apiKey).catch(() => {});
+    return true;
   } catch (err) {
     console.error("[Brevo Transactional Email Exception]", err);
+    if (apiKey) updateContactAttributesBrevo(email, { WELCOME_SENT: "false" }, apiKey).catch(() => {});
+    return false;
   }
 }
 
@@ -86,7 +120,9 @@ async function subscribeBrevo(
     const { email, name, whatsapp, branch, year, college } = params;
     const listIds = listIdStr ? [parseInt(listIdStr, 10)].filter((n) => !isNaN(n)) : [];
 
-    const attributes: Record<string, string> = {};
+    const attributes: Record<string, string> = {
+      WELCOME_SENT: "false",
+    };
     if (name?.trim()) {
       attributes.FIRSTNAME = name.trim();
       attributes.NAME = name.trim();
@@ -170,61 +206,73 @@ async function subscribeBrevo(
 }
 
 /**
- * Adds a contact to Resend Audiences (API v1)
+ * Automatically fetches pending subscribers from Brevo (WELCOME_SENT != 'true')
+ * and re-sends their welcome email when quota resets.
  */
-async function subscribeResend(
-  params: SubscribeParams,
-  apiKey: string,
-  audienceId?: string
-): Promise<SubscribeResponse> {
+export async function resendPendingWelcomeEmails(): Promise<{
+  totalPending: number;
+  sentCount: number;
+  failedCount: number;
+}> {
+  const apiKey = process.env.EMAIL_API_KEY;
+  const listIdStr = process.env.EMAIL_LIST_ID || "2";
+
+  if (!apiKey || apiKey === "your_brevo_api_key_here") {
+    return { totalPending: 0, sentCount: 0, failedCount: 0 };
+  }
+
   try {
-    const { email } = params;
-    const endpoint = audienceId
-      ? `https://api.resend.com/audiences/${audienceId}/contacts`
-      : `https://api.resend.com/contacts`;
+    const listId = parseInt(listIdStr, 10) || 2;
+    const response = await fetch(
+      `https://api.brevo.com/v3/contacts/lists/${listId}/contacts?limit=500`,
+      {
+        headers: {
+          "accept": "application/json",
+          "api-key": apiKey,
+        },
+      }
+    );
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, unsubscribed: false }),
-    });
-
-    if (response.ok || response.status === 200 || response.status === 201) {
-      return {
-        success: true,
-        status: "success",
-        message: "You're in. We'll keep you updated.",
-      };
+    if (!response.ok) {
+      console.error("[Resend Pending Error] Failed to fetch Brevo list contacts", response.status);
+      return { totalPending: 0, sentCount: 0, failedCount: 0 };
     }
 
-    const errorData = await response.json().catch(() => ({}));
-    const msg = (errorData?.message || "").toLowerCase();
+    const data = await response.json().catch(() => ({}));
+    const contacts: Array<{ email: string; attributes?: Record<string, string> }> =
+      data.contacts || [];
 
-    if (msg.includes("already exists") || msg.includes("duplicate")) {
-      return {
-        success: true,
-        status: "already_subscribed",
-        message: "You're already on the list.",
-      };
+    // Filter contacts where WELCOME_SENT is not 'true'
+    const pendingContacts = contacts.filter((c) => c.attributes?.WELCOME_SENT !== "true");
+    console.log(`[Resend Pending] Found ${pendingContacts.length} pending contacts out of ${contacts.length}`);
+
+    let sentCount = 0;
+    let failedCount = 0;
+
+    for (const contact of pendingContacts) {
+      const email = contact.email;
+      const name = contact.attributes?.FIRSTNAME || contact.attributes?.NAME;
+
+      const sent = await sendWelcomeEmailBrevo(email, name, apiKey);
+      if (sent) {
+        sentCount++;
+      } else {
+        failedCount++;
+        // If sending failed (e.g. quota limit still active), stop processing further to save requests
+        break;
+      }
+      // Small pause between dispatches
+      await new Promise((r) => setTimeout(r, 100));
     }
-
-    console.error("[Resend Error]", response.status, errorData);
 
     return {
-      success: false,
-      status: "error",
-      message: "Could not complete subscription right now. Please try again later.",
+      totalPending: pendingContacts.length,
+      sentCount,
+      failedCount,
     };
   } catch (err) {
-    console.error("[Resend Exception]", err);
-    return {
-      success: false,
-      status: "error",
-      message: "Network error when contacting email service.",
-    };
+    console.error("[Resend Pending Exception]", err);
+    return { totalPending: 0, sentCount: 0, failedCount: 0 };
   }
 }
 
@@ -264,11 +312,9 @@ export async function addSubscriber(params: SubscribeParams): Promise<SubscribeR
   }
 
   switch (provider) {
-    case "resend":
-      return subscribeResend(cleanParams, apiKey, listId);
     case "brevo":
     case "sendinblue":
     default:
-      return subscribeBrevo(cleanParams, apiKey, listId);
+      return subscribeBrevo(cleanParams, apiKey!, listId);
   }
 }
