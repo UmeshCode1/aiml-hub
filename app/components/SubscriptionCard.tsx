@@ -126,21 +126,8 @@ export function SubscriptionCard() {
             </p>
           </div>
 
-          {/* Form Input & Submission */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-3 pt-1" noValidate>
-            <div className="flex flex-col sm:flex-row items-stretch gap-2">
-              <div className="relative sm:w-5/12">
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Your Name (Optional)"
-                  disabled={state === "loading"}
-                  aria-label="Enter your full name"
-                  className="w-full h-11 px-4 text-xs sm:text-sm rounded-xl bg-[rgba(var(--bg-input))] border border-[rgba(var(--border-default))] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-muted))] focus:outline-none focus:border-[rgb(var(--accent-lime-bright))] focus:ring-1 focus:ring-[rgb(var(--accent-lime-bright))] transition-all duration-200 disabled:opacity-50"
-                />
-              </div>
-
+            <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
               <div className="relative flex-1">
                 <input
                   type="email"

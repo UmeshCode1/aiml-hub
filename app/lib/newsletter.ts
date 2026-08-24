@@ -59,8 +59,8 @@ async function sendWelcomeEmailBrevo(email: string, name?: string, apiKey?: stri
       },
       body: JSON.stringify({
         sender: {
-          name: "AI & Machine Learning Club OCT",
-          email: "aimlcluboct@gmail.com",
+          name: process.env.EMAIL_SENDER_NAME || "AI & Machine Learning Club OCT",
+          email: process.env.EMAIL_SENDER_EMAIL || "info@aimlcluboct.in",
         },
         to: [{ email, name: name || email }],
         subject: "Welcome to AIML Club OCT — You're Subscribed! 🚀",
@@ -127,15 +127,14 @@ async function subscribeBrevo(
       attributes.FIRSTNAME = name.trim();
       attributes.NAME = name.trim();
     }
-    if (whatsapp?.trim()) attributes.SMS = whatsapp.trim();
-    if (whatsapp?.trim()) attributes.WHATSAPP = whatsapp.trim();
     if (branch?.trim()) attributes.BRANCH = branch.trim();
     if (year?.trim()) attributes.YEAR = year.trim();
     if (college?.trim()) attributes.COLLEGE = college.trim();
+    if (whatsapp?.trim()) attributes.WHATSAPP = whatsapp.trim();
 
     const bodyData: Record<string, unknown> = {
       email,
-      updateEnabled: false,
+      updateEnabled: true,
     };
 
     if (listIds.length > 0) {
@@ -146,7 +145,7 @@ async function subscribeBrevo(
       bodyData.attributes = attributes;
     }
 
-    const response = await fetch("https://api.brevo.com/v3/contacts", {
+    let response = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
       headers: {
         "accept": "application/json",
@@ -156,20 +155,47 @@ async function subscribeBrevo(
       body: JSON.stringify(bodyData),
     });
 
-    if (response.ok || response.status === 201 || response.status === 204) {
-      // Must await sendWelcomeEmailBrevo so Vercel container does not terminate prematurely
-      await sendWelcomeEmailBrevo(email, name, apiKey);
+    // Fallback: If Brevo rejects 400 (e.g. duplicate WHATSAPP/SMS or format error), retry with safe attributes
+    if (!response.ok && response.status === 400) {
+      const safeAttributes: Record<string, string> = {
+        WELCOME_SENT: "false",
+      };
+      if (name?.trim()) {
+        safeAttributes.FIRSTNAME = name.trim();
+        safeAttributes.NAME = name.trim();
+      }
+      if (branch?.trim()) safeAttributes.BRANCH = branch.trim();
+      if (year?.trim()) safeAttributes.YEAR = year.trim();
+      if (college?.trim()) safeAttributes.COLLEGE = college.trim();
 
+      response = await fetch("https://api.brevo.com/v3/contacts", {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "content-type": "application/json",
+          "api-key": apiKey,
+        },
+        body: JSON.stringify({
+          email,
+          updateEnabled: true,
+          listIds: listIds.length > 0 ? listIds : undefined,
+          attributes: safeAttributes,
+        }),
+      });
+    }
+
+    // Always attempt welcome email dispatch so subscribers get instant confirmation
+    const emailSent = await sendWelcomeEmailBrevo(email, name, apiKey);
+
+    if (response.ok || response.status === 201 || response.status === 204 || emailSent) {
       return {
         success: true,
         status: "success",
-        message: "You're in. We'll keep you updated.",
+        message: "You're in! We've sent a welcome email to your inbox.",
       };
     }
 
     const errorData = await response.json().catch(() => ({}));
-
-    // Check for duplicate subscriber error from Brevo API
     const code = errorData?.code || "";
     const msg = (errorData?.message || "").toLowerCase();
 
@@ -178,13 +204,10 @@ async function subscribeBrevo(
       msg.includes("already exists") ||
       msg.includes("duplicate")
     ) {
-      // Must await sendWelcomeEmailBrevo for existing subscribers as well
-      await sendWelcomeEmailBrevo(email, name, apiKey);
-
       return {
         success: true,
         status: "already_subscribed",
-        message: "You're already on the list! We've sent a confirmation email to your inbox.",
+        message: "You're already subscribed! We've saved your details.",
       };
     }
 
@@ -242,8 +265,8 @@ export async function resendPendingWelcomeEmails(): Promise<{
     const contacts: Array<{ email: string; attributes?: Record<string, string> }> =
       data.contacts || [];
 
-    // Filter contacts where WELCOME_SENT is not 'true'
-    const pendingContacts = contacts.filter((c) => c.attributes?.WELCOME_SENT !== "true");
+    // Filter contacts where WELCOME_SENT is explicitly 'false' (failed initial delivery)
+    const pendingContacts = contacts.filter((c) => c.attributes?.WELCOME_SENT === "false");
     console.log(`[Resend Pending] Found ${pendingContacts.length} pending contacts out of ${contacts.length}`);
 
     let sentCount = 0;

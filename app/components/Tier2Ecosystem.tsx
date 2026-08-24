@@ -48,7 +48,11 @@ function IconPackage() {
   );
 }
 
-export function Tier2Ecosystem() {
+interface Tier2EcosystemProps {
+  activeTab?: "all" | "social" | "official" | "resources";
+}
+
+export function Tier2Ecosystem({ activeTab = "all" }: Tier2EcosystemProps) {
   const items = [
     {
       name: "Commudle Community",
@@ -56,6 +60,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.socials.commudle,
       icon: <IconUsers />,
       color: "rgb(99,102,241)",
+      categories: ["social", "resources"],
     },
     {
       name: "Photopia (Media)",
@@ -63,6 +68,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.socials.instagramPhotopia,
       icon: <IconImage />,
       color: "rgb(168,85,247)",
+      categories: ["social"],
     },
     {
       name: "Resources Portal",
@@ -70,6 +76,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.pages.resources,
       icon: <IconBookOpen />,
       color: "rgb(59,130,246)",
+      categories: ["resources", "official"],
     },
     {
       name: "Events & Workshops",
@@ -77,6 +84,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.pages.events,
       icon: <IconCalendar />,
       color: "rgb(34,211,238)",
+      categories: ["official", "resources"],
     },
     {
       name: "Our Team & Leads",
@@ -84,6 +92,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.pages.team,
       icon: <IconUsers />,
       color: "rgb(132,204,22)",
+      categories: ["official", "social"],
     },
     {
       name: "Gallery",
@@ -91,6 +100,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.pages.gallery,
       icon: <IconImage />,
       color: "rgb(236,72,153)",
+      categories: ["social"],
     },
     {
       name: "Blog & Tech Articles",
@@ -98,6 +108,7 @@ export function Tier2Ecosystem() {
       url: siteConfig.pages.blog,
       icon: <IconBlog />,
       color: "rgb(249,115,22)",
+      categories: ["resources", "official"],
     },
     {
       name: "APK Distribution Drive",
@@ -105,8 +116,15 @@ export function Tier2Ecosystem() {
       url: siteConfig.resources.apkDrive,
       icon: <IconPackage />,
       color: "rgb(168,85,247)",
+      categories: ["resources"],
     },
   ];
+
+  const filteredItems = items.filter(
+    (item) => activeTab === "all" || item.categories.includes(activeTab)
+  );
+
+  if (filteredItems.length === 0) return null;
 
   return (
     <section aria-label="Ecosystem and community portals" className="animate-fade-up">
@@ -118,7 +136,7 @@ export function Tier2Ecosystem() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <a
             key={item.name}
             href={item.url}

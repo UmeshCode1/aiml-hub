@@ -47,7 +47,11 @@ function LinkedInIcon() {
   );
 }
 
-export function Tier1Socials() {
+interface Tier1SocialsProps {
+  activeTab?: "all" | "social" | "official" | "resources";
+}
+
+export function Tier1Socials({ activeTab = "all" }: Tier1SocialsProps) {
   const primaryLinks = [
     {
       name: "WhatsApp Group",
@@ -57,6 +61,7 @@ export function Tier1Socials() {
       icon: <WhatsAppIcon />,
       badge: "Community",
       borderGlow: "hover:border-[#25D366]/50",
+      categories: ["social"],
     },
     {
       name: "WhatsApp Channel",
@@ -66,6 +71,7 @@ export function Tier1Socials() {
       icon: <WhatsAppIcon />,
       badge: "Updates",
       borderGlow: "hover:border-[#25D366]/50",
+      categories: ["social", "official"],
     },
     {
       name: "Instagram",
@@ -75,6 +81,7 @@ export function Tier1Socials() {
       icon: <InstagramIcon />,
       badge: "Primary",
       borderGlow: "hover:border-[#E4405F]/50",
+      categories: ["social"],
     },
     {
       name: "Official Website",
@@ -84,6 +91,7 @@ export function Tier1Socials() {
       icon: <GlobeIcon />,
       badge: "Official",
       borderGlow: "hover:border-[rgb(34,211,238)]/50",
+      categories: ["official"],
     },
     {
       name: "GitHub",
@@ -93,6 +101,7 @@ export function Tier1Socials() {
       icon: <GitHubIcon />,
       badge: "Open Source",
       borderGlow: "hover:border-[rgb(163,230,53)]/50",
+      categories: ["official", "resources"],
     },
     {
       name: "LinkedIn",
@@ -102,8 +111,15 @@ export function Tier1Socials() {
       icon: <LinkedInIcon />,
       badge: "Careers",
       borderGlow: "hover:border-[#0A66C2]/50",
+      categories: ["social", "official"],
     },
   ];
+
+  const filteredLinks = primaryLinks.filter(
+    (item) => activeTab === "all" || item.categories.includes(activeTab)
+  );
+
+  if (filteredLinks.length === 0) return null;
 
   return (
     <section aria-label="Primary social and official connections" className="animate-fade-up">
@@ -115,7 +131,7 @@ export function Tier1Socials() {
       </div>
 
       <div className="flex flex-col gap-3">
-        {primaryLinks.map((item) => (
+        {filteredLinks.map((item) => (
           <a
             key={item.name}
             href={item.url}

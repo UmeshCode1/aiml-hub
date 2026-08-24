@@ -234,6 +234,21 @@ export function getWelcomeEmailHtml(recipientEmail?: string, recipientName?: str
                 </tr>
               </table>
 
+              <!-- ── SUBTLE BOTTOM LEADERSHIP CONTACT NOTE ────────────── -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 12px; padding: 12px 16px; margin-top: 14px;">
+                <tr>
+                  <td align="center">
+                    <p style="margin: 0 0 3px 0; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b;">
+                      STUDENT LEADERSHIP &amp; CONTACT DESK
+                    </p>
+                    <p style="margin: 0; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+                      <strong style="color: #e2e8f0;">Umesh Patel</strong> <span style="color: #94a3b8;">(Vice President)</span> &nbsp;•&nbsp; 
+                      <a href="https://wa.me/917974389476" target="_blank" style="color: #22d3ee; text-decoration: none; font-weight: 600;">+91 79743 89476</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
             </td>
           </tr>
 
@@ -258,7 +273,7 @@ export function getWelcomeEmailHtml(recipientEmail?: string, recipientName?: str
               <!-- Mandatory Legal & Contact Line -->
               <p style="margin: 0; font-size: 10px; color: #475569; line-height: 1.6;">
                 You are receiving this email because you subscribed to updates at social.aimlcluboct.in.<br>
-                Official Contact Address: <a href="mailto:aimlcluboct@gmail.com" style="color: #94a3b8; text-decoration: none;">aimlcluboct@gmail.com</a><br>
+                Official Contact Address: <a href="mailto:info@aimlcluboct.in" style="color: #94a3b8; text-decoration: none;">info@aimlcluboct.in</a><br>
                 © ${currentYear} AI &amp; Machine Learning Club OCT. All rights reserved.
               </p>
             </td>

@@ -61,9 +61,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-5 mt-2">
             {/* ── Tier 1: Visually Dominant Primary Social Links ────── */}
-            {(activeTab === "all" || activeTab === "social" || activeTab === "official") && (
-              <Tier1Socials />
-            )}
+            <Tier1Socials activeTab={activeTab} />
 
             {/* ── Flagship Voice Initiative CTA Card ─────────────────── */}
             {(activeTab === "all" || activeTab === "official") && (
@@ -81,9 +79,7 @@ export default function Home() {
             )}
 
             {/* ── Tier 2: Compact Secondary Ecosystem & Community Links ─ */}
-            {(activeTab === "all" || activeTab === "resources") && (
-              <Tier2Ecosystem />
-            )}
+            <Tier2Ecosystem activeTab={activeTab} />
 
             {/* ── Tier 3: Feedback & Voice Section ───────────────────── */}
             {(activeTab === "all" || activeTab === "social") && (
